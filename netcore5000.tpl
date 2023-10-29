@@ -4,7 +4,7 @@ server {
         error_log /var/log/%web_system%/domains/%domain%.error.log error;
 
         location / {
-            proxy_pass         http://127.0.0.1:5000;
+            proxy_pass         http://127.0.0.1:5001;
             proxy_http_version 1.1;
             proxy_set_header   Upgrade $http_upgrade;
             proxy_set_header   Connection keep-alive;
@@ -18,7 +18,7 @@ server {
         }
 
         location @fallback {
-                 proxy_pass http://127.0.0.1:5000:/$1;
+                 proxy_pass http://127.0.0.1:5001:/$1;
         }
 
         location ~ /\.ht {return 404;}
