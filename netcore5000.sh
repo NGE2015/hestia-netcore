@@ -14,9 +14,9 @@ runuser -l $user -c "nohup /usr/bin/dorun $home $user $domain &" > /dev/null
 
 mkdir "$home/$user/web/$domain/script"
 cd "$home/$user/web/$domain/script"
-cat > $domain systemctl_script.sh << EOL 
+cat > systemctl_script.sh << EOL 
 [Unit]
-Description='$domain' application
+Description=$domain application
 
 [Service]
 # systemd will run this executable to start the service
@@ -43,3 +43,6 @@ Environment=DOTNET_ROOT=/usr/lib64/dotnet
 [Install]
 WantedBy=multi-user.target
 EOL
+
+#copy the script file to the systemctl
+mv "$home/$user/web/$domain/script/systemctl_script.sh" /etc/systemd/system/$domain.sh
