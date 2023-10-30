@@ -26,5 +26,7 @@ server {
         location ~ /\.git/ {return 404;}
         location ~ /\.hg/ {return 404;}
         location ~ /\.bzr/ {return 404;}
-        include %home%/%user%/conf/web/nginx.%domain%.conf*;
+        #old version from origin        
+        #include %home%/%user%/conf/web/nginx.%domain%.conf*;
+        include %home%/%user%/conf/web/nginx/%domain%/nginx.conf*;
 }
