@@ -23,7 +23,7 @@ sudo chmod 755 /usr/local/hestia/data/templates/web/ngnix/netcore*.sh
 
 Once you have done the previous steps you can place your NetCore/ASPNET app on the **netcoreapp** folder, using the file manager. Then go to your control and select the web site. Once you selected it click on **Advanced options** and change the **Proxy template** to **netcore5000** or **netcoresock**.
 
-**##New Addon  Service to execute the dotnet project**
+## 2023-11-01 New Addon  Service to execute the dotnet project
 It is created a file on $home/$user/web/$domain/script with all the info necessary.
 then its automatically moved to : /etc/systemd/system/$domain.sh
 
