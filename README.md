@@ -2,7 +2,9 @@
 The goal of this repository is to bring you a base template that allows you to host/run ASPNET/Net Core Applications with Hestia Control Panel.
 
 ## Requisites
-Before you use theses templates make sure you have installed the runtime packages or SDK on your system. Yoy can follow these links for more info.
+Before you use theses templates make sure you have installed the runtime packages or SDK on your system. Yoy can follow these links for more info.</br>
+
+**I've used SNAP to install DotNet, was easier and no fush<**/br>
 
 [Install .NET on Linux](https://learn.microsoft.com/en-us/dotnet/core/install/linux)
 [Host ASP.NET Core on Linux with Nginx](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-7.0&tabs=linux-ubuntu)
@@ -39,7 +41,10 @@ It is created 2 files on $home/$user/web/$domain/script
 **update_shell_file.sh** Its the shell that we need to ```shell run sh update_shell_file.sh ``` this will update the systemctl_script with the necessary items, and it will move the file to **/etc/systemd/system/** and enable the service.
 
 
-## Commands that will help you:
+## Commands and Locations that will help you:
+
+/home/$user/conf/web/$domain   -> Location of the nginx configuration </br>
+
 sudo nginx -t<br />
 sudo nginx -s reload<br />
 
