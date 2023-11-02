@@ -39,6 +39,22 @@ It is created 2 files on $home/$user/web/$domain/script
 **update_shell_file.sh** Its the shell that we need to ```shell run sh update_shell_file.sh ``` this will update the systemctl_script with the necessary items, and it will move the file to **/etc/systemd/system/** and enable the service.
 
 
+## Commands that will help you:
+sudo nginx -t
+sudo nginx -s reload
+
+nano /etc/systemd/system/HelloBlazor.service
+
+systemctl daemon-reload
+sudo systemctl stop HelloBlazor.service
+sudo systemctl start HelloBlazor.service
+sudo systemctl status HelloBlazor.service
+
+sudo journalctl -fu HelloBlazor.service
+
+tail -f /var/log/nginx/access.log
+tail -f /var/log/nginx/error.log
+
 ## Notes
 Keep in mind that the proxy template `netcore5000.sh` runs the application as usually NetCore app does. That means the TCP port 5000 will be locked for other applications and you can only run only one app on this port. I suggest you use Unix Sockets instead. Or create different templates for different TPC ports.
 
