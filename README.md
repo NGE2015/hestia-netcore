@@ -18,12 +18,19 @@ The process is very simple. Only copy/clone the follow files:
 
 To the the Hestia Ngnix's templates, usually `/usr/local/hestia/data/templates/web/ngnix`. Make sure the bash scripts have the proper run permisions. You can set them with the following command:
 ```bash
-sudo chmod 755 /usr/local/hestia/data/templates/ngnix/netcore*.sh
+sudo chmod 755 /usr/local/hestia/data/templates/web/ngnix/netcore*.sh
 ```
 
 Once you have done the previous steps you can place your NetCore/ASPNET app on the **netcoreapp** folder, using the file manager. Then go to your control and select the web site. Once you selected it click on **Advanced options** and change the **Proxy template** to **netcore5000** or **netcoresock**.
 
+**##New Addon  Service to execute the dotnet project**
+It is created a file on $home/$user/web/$domain/script with all the info necessary.
+then its automatically moved to : /etc/systemd/system/$domain.sh
 
+You will need to update:
+```Shell
+ExecStart=dotnet "'$home'/'$user'/web/'$domain'/netcoreapp/'**$domain'.dll**"
+```
 
 ## Notes
 Keep in mind that the proxy template `netcore5000.sh` runs the application as usually NetCore app does. That means the TCP port 5000 will be locked for other applications and you can only run only one app on this port. I suggest you use Unix Sockets instead. Or create different templates for different TPC ports.
