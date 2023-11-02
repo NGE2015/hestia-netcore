@@ -22,7 +22,7 @@ Description=$domain application
 [Service]
 # systemd will run this executable to start the service
 # if /usr/bin/dotnet doesn't work, use `which dotnet` to find correct dotnet executable path
-ExecStart=dotnet "'$home'/'$user'/web/'$domain'/netcoreapp/@ApplicationName.dll"
+ExecStart=dotnet "$home/$user/web/$domain/netcoreapp/@ApplicationName.dll"
 # to query logs using journalctl, set a logical name here
 SyslogIdentifier= '$domain'
 
