@@ -16,9 +16,18 @@ The process is very simple. Only copy/clone the follow files:
 * netcoresock.tpl *shell script that runs the app on Unix Sockets*
 * netcoresock.stpl *shell script that runs the app on Unix Sockets*
 
-To the the Hestia Ngnix's templates, usually `/usr/local/hestia/data/templates/web/ngnix`. Make sure the bash scripts have the proper run permisions. You can set them with the following command:
+To the the Hestia Ngnix's templates, usually `/usr/local/hestia/data/templates/web/nginx/`. Make sure the bash scripts have the proper run permisions. You can set them with the following command:
+## navigate to and wget the files:
 ```bash
-sudo chmod 755 /usr/local/hestia/data/templates/web/ngnix/netcore*.sh
+cd /usr/local/hestia/data/templates/web/nginx/
+
+wget https://github.com/NGE2015/hestia-netcore/archive/refs/heads/main.zip
+
+unzip main.zip
+
+cp hestia-netcore-main/* /usr/local/hestia/data/templates/web/nginx/
+
+sudo chmod 755 /usr/local/hestia/data/templates/web/nginx/netcore*.sh
 ```
 
 Once you have done the previous steps you can place your NetCore/ASPNET app on the **netcoreapp** folder, using the file manager. Then go to your control and select the web site. Once you selected it click on **Advanced options** and change the **Proxy template** to **netcore5000** or **netcoresock**.
