@@ -62,12 +62,12 @@ read -p "What is the name of the DLL that should be initiated. Ex:. Project1.dll
 read -p "What is the name the systemd  service name file name should have? Ex:. ProjectOne =" var_systemd_name
 
 #check if vars are empty
-if [ "$$var_project_name" = "" ]; then
+if [ $$var_project_name = "" ]; then
     echo var_project_name is empty
     exit 1;
 fi
 
-if [ "$$var_systemd_name" = "" ]; then
+if [ $$var_systemd_name = "" ]; then
     echo var_systemd_name is empty
     exit 1;
 fi
@@ -91,3 +91,6 @@ sudo systemctl start $$var_systemd_name.service
 sudo systemctl status $$var_systemd_name.service
 
 EOL
+
+#remove double $$ 
+sed -i 's/$$=.*/$$='$/' update_shell_file.sh
