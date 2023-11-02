@@ -14,6 +14,7 @@ runuser -l $user -c "nohup /usr/bin/dorun $home $user $domain &" > /dev/null
 
 mkdir "$home/$user/web/$domain/script"
 cd "$home/$user/web/$domain/script"
+
 cat > systemctl_script.sh << EOL 
 [Unit]
 Description=$domain application
@@ -21,7 +22,7 @@ Description=$domain application
 [Service]
 # systemd will run this executable to start the service
 # if /usr/bin/dotnet doesn't work, use `which dotnet` to find correct dotnet executable path
-ExecStart=/usr/bin/dotnet "'$home'/'$user'/web/'$domain'/netcoreapp/'$domain'.dll"
+ExecStart=dotnet "'$home'/'$user'/web/'$domain'/netcoreapp/@ApplicationName.dll"
 # to query logs using journalctl, set a logical name here
 SyslogIdentifier= '$domain'
 
@@ -44,5 +45,49 @@ Environment=DOTNET_ROOT=/usr/lib64/dotnet
 WantedBy=multi-user.target
 EOL
 
+
+
+#Next phase, create a new script to update the the systemctl_script with prompt questions.
+
+cat > update_shell_file.sh << EOL
+#Get the dll filename to update the systemctl_script.sh
+#Get the desired final name to update the systemctl_script.sh to service and add automatically on the system
+
+#File that will be updated
+file="$home/$user/web/$domain/script/systemctl_script.sh"
+
+
+#fill variables with the necessary data to update the files.
+read -p "What is the name of the DLL that should be initiated. Ex:. Project1.dll =" var_project_name
+read -p "What is the name the systemd  service name file name should have? Ex:. ProjectOne =" var_systemd_name
+
+#check if vars are empty
+if [ "$var_project_name" = "" ]; then
+    echo var_project_name is empty
+    exit 1;
+fi
+
+if [ "$var_systemd_name" = "" ]; then
+    echo var_systemd_name is empty
+    exit 1;
+fi
+
+#update the systemctl_script.sh
+sed -i 's/@ApplicationName=.*/@ApplicationName='$var_project_name'/' $file
+
 #copy the script file to the systemctl
-mv "$home/$user/web/$domain/script/systemctl_script.sh" /etc/systemd/system/$domain.sh
+#mv "$home/$user/web/$domain/script/systemctl_script.sh" /etc/systemd/system/$var_systemd_name.service
+
+#Reload the service files to include the new service.
+sudo systemctl daemon-reload
+
+#enable your service on every reboot
+sudo systemctl enable $var_systemd_name.service
+
+#Start your service
+sudo systemctl start $var_systemd_name.service
+
+#check the status of your service
+sudo systemctl status $var_systemd_name.service
+
+EOL
