@@ -22,7 +22,8 @@ Description=$domain application
 [Service]
 # systemd will run this executable to start the service
 # if /usr/bin/dotnet doesn't work, use `which dotnet` to find correct dotnet executable path
-ExecStart=dotnet "$home/$user/web/$domain/netcoreapp/@ApplicationName.dll"
+WorkingDirectory=/$home/$user/web/$domain/netcoreapp/
+ExecStart= /snap/bin/dotnet "$home/$user/web/$domain/netcoreapp/@ApplicationName.dll"
 # to query logs using journalctl, set a logical name here
 SyslogIdentifier= '$domain'
 
@@ -30,16 +31,18 @@ SyslogIdentifier= '$domain'
 # If you pick a different user, make sure dotnet and all permissions are set correctly to run the app
 # To update permissions, use 'chown yourusername -R /srv/HelloWorld' to take ownership of the folder and files,
 #       Use 'chmod +x /srv/HelloWorld/HelloWorld' to allow execution of the executable file
-User="$user"
+User=root
 
 # ensure the service restarts after crashing
 Restart=always
 # amount of time to wait before restarting the service                        
-RestartSec=5   
+RestartSec=30   
 
 # This environment variable is necessary when dotnet isn't loaded for the specified user.
 # To figure out this value, run 'env | grep DOTNET_ROOT' when dotnet has been loaded into your shell.
-Environment=DOTNET_ROOT=/usr/lib64/dotnet
+#Environment=DOTNET_ROOT=/usr/lib64/dotnet
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
 
 [Install]
 WantedBy=multi-user.target
