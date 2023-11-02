@@ -35,25 +35,25 @@ Once you have done the previous steps you can place your NetCore/ASPNET app on t
 ## 2023-11-01 New Addon  Service to execute the dotnet project
 It is created 2 files on $home/$user/web/$domain/script
 
-**systemctl_script.sh** Will contain the systemd service, it will be created as a template ( you dont need to update it )
+**systemctl_script.sh** Will contain the systemd service, it will be created as a template ( you dont need to update it )<br />
 **update_shell_file.sh** Its the shell that we need to ```shell run sh update_shell_file.sh ``` this will update the systemctl_script with the necessary items, and it will move the file to **/etc/systemd/system/** and enable the service.
 
 
 ## Commands that will help you:
-sudo nginx -t
-sudo nginx -s reload
+sudo nginx -t<br />
+sudo nginx -s reload<br />
 
-nano /etc/systemd/system/HelloBlazor.service
+nano /etc/systemd/system/HelloBlazor.service<br />
 
-systemctl daemon-reload
-sudo systemctl stop HelloBlazor.service
-sudo systemctl start HelloBlazor.service
-sudo systemctl status HelloBlazor.service
+systemctl daemon-reload<br />
+sudo systemctl stop HelloBlazor.service<br />
+sudo systemctl start HelloBlazor.service<br />
+sudo systemctl status HelloBlazor.service<br />
 
-sudo journalctl -fu HelloBlazor.service
+sudo journalctl -fu HelloBlazor.service<br />
 
-tail -f /var/log/nginx/access.log
-tail -f /var/log/nginx/error.log
+tail -f /var/log/nginx/access.log<br />
+tail -f /var/log/nginx/error.log<br />
 
 ## Notes
 Keep in mind that the proxy template `netcore5000.sh` runs the application as usually NetCore app does. That means the TCP port 5000 will be locked for other applications and you can only run only one app on this port. I suggest you use Unix Sockets instead. Or create different templates for different TPC ports.
