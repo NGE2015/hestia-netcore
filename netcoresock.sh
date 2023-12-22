@@ -26,6 +26,8 @@ Description=$domain application
 [Service]
 WorkingDirectory=/$home/$user/web/$domain/netcoreapp/
 ExecStart= /snap/bin/dotnet "$home/$user/web/$domain/netcoreapp/@ApplicationName.dll"
+ExecStartPost=/bin/sh -c 'sleep 5; chown anasilva:www-data /$home/$user/web/$domain/netcoreapp/app.sock'
+ExecStartPost=/bin/sh -c 'sleep 5; chmod 660 /$home/$user/web/$domain/netcoreapp/app.sock'
 SyslogIdentifier= '$domain'
 
 User=root
@@ -35,14 +37,14 @@ RestartSec=30
 #Environment=DOTNET_ROOT=/usr/lib64/dotnet
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
-
+Environment=DOTNET_ROOT=/snap/dotnet
 [Install]
 WantedBy=multi-user.target
 EOL
 ######## end systemctl_script.sh #######
 
 #Next phase, create a new script to update the the systemctl_script with prompt questions.
-cat > update_shell_file.sh << 'EOL'
+cat > update_shell_file.sh << EOL
 ##!/bin/bash
 # Define your base directories and files
 #home="/path/to/home"
