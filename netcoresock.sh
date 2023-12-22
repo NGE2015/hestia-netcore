@@ -18,6 +18,30 @@ chmod 777 $home/$user/web/$domain/netcoreapp/app.sock
 
 mkdir "$home/$user/web/$domain/script"
 cd "$home/$user/web/$domain/script"
+######## systemctl_script.sh #######
+cat > systemctl_script.sh << EOL 
+[Unit]
+Description=$domain application
+
+[Service]
+WorkingDirectory=/$home/$user/web/$domain/netcoreapp/
+ExecStart= /snap/bin/dotnet "$home/$user/web/$domain/netcoreapp/@ApplicationName.dll"
+SyslogIdentifier= '$domain'
+
+User=root
+Restart=always                   
+RestartSec=30   
+
+#Environment=DOTNET_ROOT=/usr/lib64/dotnet
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
+EOL
+######## end systemctl_script.sh #######
+
+#Next phase, create a new script to update the the systemctl_script with prompt questions.
 cat > update_shell_file.sh << 'EOL'
 ##!/bin/bash
 # Define your base directories and files
@@ -32,31 +56,31 @@ read -p "Enter the name of the DLL to be initiated (e.g., Project1.dll): " var_p
 read -p "Enter the desired systemd service name (e.g., ProjectOne): " var_systemd_name
 
 # Check if vars are empty
-if [ -z "\$var_project_name" ]; then
+if [ -z "$var_project_name" ]; then
     echo "var_project_name is empty"
     exit 1
 fi
 
-if [ -z "\$var_systemd_name" ]; then
+if [ -z "$var_systemd_name" ]; then
     echo "var_systemd_name is empty"
     exit 1
 fi
 
 # Update the systemctl_script.sh with the application name
-sed -i 's/@ApplicationName=.*/@ApplicationName='\${var_project_name}'/' "\${file}"
+sed -i 's/@ApplicationName=.*/@ApplicationName='${var_project_name}'/' "${file}"
 
 # Move the script file to the systemctl directory
-sudo mv "\$file" "/etc/systemd/system/\${var_systemd_name}.service"
+sudo mv "$file" "/etc/systemd/system/${var_systemd_name}.service"
 
 # Reload the service files to include the new service
 sudo systemctl daemon-reload
 
 # Enable your service on every reboot
-sudo systemctl enable "\${var_systemd_name}.service"
+sudo systemctl enable "${var_systemd_name}.service"
 
 # Start your service
-sudo systemctl start "\${var_systemd_name}e.service"
+sudo systemctl start "${var_systemd_name}.service"
 
 # Check the status of your service
-sudo systemctl status "\${var_systemd_name}.service"
+sudo systemctl status "${var_systemd_name}.service"
 EOL
