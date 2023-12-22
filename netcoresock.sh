@@ -14,7 +14,10 @@ runuser -l $user -c "cd $home/$user/web/$domain/netcoreapp && nohup /usr/bin/dot
 sleep 5
 chmod 777 $home/$user/web/$domain/netcoreapp/app.sock
 
+#create service
 
+mkdir "$home/$user/web/$domain/script"
+cd "$home/$user/web/$domain/script"
 cat > update_shell_file.sh << EOL
 ##!/bin/bash
 # Define your base directories and files
